@@ -1,0 +1,854 @@
+<Window
+    x:Class="Kil0bitSystemMonitor.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid x:Name="SettingsRoot" RequestedTheme="Dark" Loaded="SettingsRoot_Loaded">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Custom title bar -->
+        <Grid x:Name="AppTitleBar" Grid.Row="0" Background="Transparent">
+            <TextBlock Text="{x:Bind L.WindowTitle, Mode=OneWay}"
+                       VerticalAlignment="Center"
+                       Margin="16,0,0,0"
+                       FontWeight="SemiBold"
+                       FontSize="13"
+                       Opacity="0.9" />
+        </Grid>
+
+        <NavigationView x:Name="SettingsNav"
+                        Grid.Row="1"
+                        PaneDisplayMode="Left"
+                        OpenPaneLength="220"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        SelectionChanged="SettingsNav_SelectionChanged">
+            <NavigationView.MenuItems>
+                <NavigationViewItem Content="{x:Bind L.NavHome, Mode=OneWay}" Tag="Home" IsSelected="True">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Home" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="{x:Bind L.NavGeneral, Mode=OneWay}" Tag="General">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Setting" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="{x:Bind L.NavMonitoring, Mode=OneWay}" Tag="Monitoring">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="FourBars" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="{x:Bind L.NavAppearance, Mode=OneWay}" Tag="Appearance">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Edit" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="{x:Bind L.NavAbout, Mode=OneWay}" Tag="About">
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Help" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" HorizontalScrollMode="Disabled">
+                <StackPanel MaxWidth="800" HorizontalAlignment="Left" Margin="24" Spacing="0">
+
+                    <!-- ==================== ГЛАВНАЯ ==================== -->
+                    <StackPanel x:Name="HomeSection" Visibility="Visible">
+                        <StackPanel Margin="0,0,0,32">
+                            <TextBlock Text="{x:Bind L.HomeWelcome, Mode=OneWay}" FontSize="42" FontWeight="Bold" Margin="0,0,0,4" />
+                            <TextBlock Text="{x:Bind L.HomeSubtitle, Mode=OneWay}"
+                                       FontSize="17" Opacity="0.7" TextWrapping="Wrap" MaxWidth="640" />
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!-- Общие -->
+                            <Button x:Name="HomeGeneralBtn" Click="HomeCard_Click" Tag="General" Width="280" Height="110" Margin="0,0,16,16" Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1" Padding="16" CornerRadius="12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <SymbolIcon Symbol="Setting" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,16,0" VerticalAlignment="Top" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{x:Bind L.CardGeneral, Mode=OneWay}" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,4" />
+                                            <TextBlock Text="{x:Bind L.CardGeneralDesc, Mode=OneWay}" Opacity="0.7" FontSize="12" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Мониторинг -->
+                            <Button x:Name="HomeMonitoringBtn" Click="HomeCard_Click" Tag="Monitoring" Width="280" Height="110" Margin="0,0,0,16" Grid.Column="1" Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1" Padding="16" CornerRadius="12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <SymbolIcon Symbol="FourBars" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,16,0" VerticalAlignment="Top" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{x:Bind L.CardMonitoring, Mode=OneWay}" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,4" />
+                                            <TextBlock Text="{x:Bind L.CardMonitoringDesc, Mode=OneWay}" Opacity="0.7" FontSize="12" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- Внешний вид -->
+                            <Button x:Name="HomeAppearanceBtn" Click="HomeCard_Click" Tag="Appearance" Width="280" Height="110" Margin="0,0,16,0" Grid.Row="1" Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1" Padding="16" CornerRadius="12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <SymbolIcon Symbol="Edit" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,16,0" VerticalAlignment="Top" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{x:Bind L.CardAppearance, Mode=OneWay}" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,4" />
+                                            <TextBlock Text="{x:Bind L.CardAppearanceDesc, Mode=OneWay}" Opacity="0.7" FontSize="12" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Button>
+
+                            <!-- О программе -->
+                            <Button x:Name="HomeAboutBtn" Click="HomeCard_Click" Tag="About" Width="280" Height="110" Grid.Row="1" Grid.Column="1" Padding="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1" Padding="16" CornerRadius="12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <SymbolIcon Symbol="Help" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,16,0" VerticalAlignment="Top" />
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{x:Bind L.CardAbout, Mode=OneWay}" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,4" />
+                                            <TextBlock Text="{x:Bind L.CardAboutDesc, Mode=OneWay}" Opacity="0.7" FontSize="12" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Button>
+                        </Grid>
+
+                        <!-- Заметка -->
+                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="4" Padding="16" Margin="0,20,0,0"
+                                BorderBrush="{ThemeResource AccentFillColorDefaultBrush}" BorderThickness="4,0,0,0">
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <SymbolIcon Symbol="Accept" Foreground="{ThemeResource AccentFillColorDefaultBrush}" VerticalAlignment="Center" />
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{x:Bind L.NoteTitle, Mode=OneWay}" FontWeight="Bold" FontSize="14" />
+                                    <TextBlock Text="{x:Bind L.NoteText, Mode=OneWay}" Opacity="0.8" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- ==================== ОБЩИЕ ==================== -->
+                    <StackPanel x:Name="GeneralSection" Visibility="Collapsed">
+                        <TextBlock Text="{x:Bind L.SecGeneral, Mode=OneWay}" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,24" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Border Grid.Row="0" Grid.Column="0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE7B3;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0">
+                                        <TextBlock Text="{x:Bind L.ShowOverlay, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <TextBlock Text="{x:Bind L.ShowOverlayDesc, Mode=OneWay}" Opacity="0.6" FontSize="12.5" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="2" HorizontalAlignment="Right" OnContent="{x:Bind L.OnLabel, Mode=OneWay}" OffContent="{x:Bind L.OffLabel, Mode=OneWay}" IsOn="{Binding Config.ShowOverlay, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="0" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE718;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0">
+                                        <TextBlock Text="{x:Bind L.LockPosition, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <TextBlock Text="{x:Bind L.LockPositionDesc, Mode=OneWay}" Opacity="0.6" FontSize="12.5" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="2" HorizontalAlignment="Right" OnContent="{x:Bind L.OnLabel, Mode=OneWay}" OffContent="{x:Bind L.OffLabel, Mode=OneWay}" IsOn="{Binding Config.LockPosition, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="0" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="2" Grid.Column="0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE72A;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0">
+                                        <TextBlock Text="{x:Bind L.RunAtStartup, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <TextBlock Text="{x:Bind L.RunAtStartupDesc, Mode=OneWay}" Opacity="0.6" FontSize="12.5" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="2" HorizontalAlignment="Right" OnContent="{x:Bind L.OnLabel, Mode=OneWay}" OffContent="{x:Bind L.OffLabel, Mode=OneWay}" IsOn="{Binding Config.LaunchOnStartup, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="0" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="0" Grid.Column="2" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE740;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0">
+                                        <TextBlock Text="{x:Bind L.HideFullscreen, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <TextBlock Text="{x:Bind L.HideFullscreenDesc, Mode=OneWay}" Opacity="0.6" FontSize="12.5" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="2" HorizontalAlignment="Right" OnContent="{x:Bind L.OnLabel, Mode=OneWay}" OffContent="{x:Bind L.OffLabel, Mode=OneWay}" IsOn="{Binding Config.HideOnFullscreen, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="0" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="1" Grid.Column="2" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE90E;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0">
+                                        <TextBlock Text="{x:Bind L.SnapTaskbar, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <TextBlock Text="{x:Bind L.SnapTaskbarDesc, Mode=OneWay}" Opacity="0.6" FontSize="12.5" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="2" HorizontalAlignment="Right" OnContent="{x:Bind L.OnLabel, Mode=OneWay}" OffContent="{x:Bind L.OffLabel, Mode=OneWay}" IsOn="{Binding Config.StickToTaskbar, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="0" />
+                                </Grid>
+                            </Border>
+
+                            <Border Grid.Row="2" Grid.Column="2" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE819;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0">
+                                        <TextBlock Text="{x:Bind L.KeepOnTop, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <TextBlock Text="{x:Bind L.KeepOnTopDesc, Mode=OneWay}" Opacity="0.6" FontSize="12.5" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="2" HorizontalAlignment="Right" OnContent="{x:Bind L.OnLabel, Mode=OneWay}" OffContent="{x:Bind L.OffLabel, Mode=OneWay}" IsOn="{Binding Config.AlwaysOnTop, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="0" />
+                                </Grid>
+                            </Border>
+
+                            <!-- Частота обновления -->
+                            <Border Grid.Row="3" Grid.ColumnSpan="3" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,4,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="220" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE916;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,16,0">
+                                        <TextBlock Text="{x:Bind L.RefreshRate, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <TextBlock Text="{x:Bind L.RefreshRateDesc, Mode=OneWay}" Opacity="0.6" FontSize="12.5" TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <ComboBox x:Name="RefreshRateCombo" Grid.Column="2"
+                                              SelectedValue="{Binding Config.UpdateInterval, Mode=TwoWay}"
+                                              SelectedValuePath="Value"
+                                              DisplayMemberPath="Label"
+                                              HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+
+                            <!-- Язык интерфейса и оверлея -->
+                            <Border Grid.Row="4" Grid.ColumnSpan="3" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Margin="0,0,0,12" Padding="20,16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="32" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon Glyph="&#xE774;" FontSize="20" Foreground="{ThemeResource AccentFillColorDefaultBrush}" Margin="0,0,20,0" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Spacing="8">
+                                        <TextBlock Text="{x:Bind L.UiLanguageLabel, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <ComboBox x:Name="UiLanguageCombo"
+                                                  SelectedValue="{Binding Config.Language, Mode=TwoWay}"
+                                                  SelectedValuePath="Value" DisplayMemberPath="Label"
+                                                  HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="3" Spacing="8">
+                                        <TextBlock Text="{x:Bind L.OverlayLangLabel, Mode=OneWay}" FontWeight="SemiBold" FontSize="15" />
+                                        <ComboBox x:Name="OverlayLanguageCombo"
+                                                  SelectedValue="{Binding Config.OverlayLanguage, Mode=TwoWay}"
+                                                  SelectedValuePath="Value" DisplayMemberPath="Label"
+                                                  HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- ==================== МОНИТОРИНГ ==================== -->
+                    <StackPanel x:Name="MonitoringSection" Visibility="Collapsed">
+                        <TextBlock Text="{x:Bind L.SecMonitoring, Mode=OneWay}" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,24" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.5*" />
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Левая колонка: телеметрия -->
+                            <StackPanel Grid.Column="0">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8,8,0,0" Margin="0,0,0,1" Padding="16,12">
+                                    <Grid>
+                                        <TextBlock Text="{x:Bind L.TelemetryHeader, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center" />
+                                    </Grid>
+                                </Border>
+
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="0,0,8,8" Padding="16">
+                                    <StackPanel>
+                                        <!-- ЦП / ОЗУ -->
+                                        <Grid Margin="0,0,0,16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="20" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,0,12">
+                                                    <FontIcon Glyph="&#xE734;" FontSize="16" Foreground="{ThemeResource AccentFillColorDefaultBrush}" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{x:Bind L.GroupCpu, Mode=OneWay}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                                <Grid Margin="0,0,0,12">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.CpuUsage, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowCpu, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.RamUsage, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowRam, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2">
+                                                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,0,16">
+                                                    <FontIcon Glyph="&#xE7AD;" FontSize="16" Foreground="{ThemeResource AccentFillColorDefaultBrush}" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{x:Bind L.GroupGpu, Mode=OneWay}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                                <Grid Margin="0,0,0,12">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.GpuUsage, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowGpu, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.GpuTemp, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowTemp, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Border Height="1" Background="{ThemeResource DividerStrokeColorDefaultBrush}" Margin="0,8,0,16" />
+
+                                        <!-- Сеть / диски -->
+                                        <Grid Margin="0,0,0,16">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="20" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <StackPanel Grid.Column="0">
+                                                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,0,12">
+                                                    <FontIcon Glyph="&#xE774;" FontSize="16" Foreground="{ThemeResource AccentFillColorDefaultBrush}" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{x:Bind L.GroupNet, Mode=OneWay}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                                <Grid Margin="0,0,0,12">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.NetUp, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowNetUp, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.NetDown, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowNetDown, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                            </StackPanel>
+
+                                            <StackPanel Grid.Column="2">
+                                                <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,0,0,16">
+                                                    <FontIcon Glyph="&#xE7C1;" FontSize="16" Foreground="{ThemeResource AccentFillColorDefaultBrush}" VerticalAlignment="Center" />
+                                                    <TextBlock Text="{x:Bind L.GroupDisk, Mode=OneWay}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                                                </StackPanel>
+
+                                                <Grid Margin="0,0,0,12">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.DiskSpace, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowDisk, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="130" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{x:Bind L.DiskActivity, Mode=OneWay}" VerticalAlignment="Center" Opacity="0.8" TextWrapping="Wrap" />
+                                                    <ToggleSwitch Grid.Column="1" IsOn="{Binding Config.ShowDiskSpeed, Mode=TwoWay}" OnContent="" OffContent="" Margin="10,0,0,0" MinWidth="0" />
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Правая колонка: оборудование -->
+                            <StackPanel Grid.Column="2">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Bind L.HwSelection, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,16" />
+
+                                        <TextBlock Text="{x:Bind L.NetAdapter, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,8" />
+                                        <ComboBox x:Name="NetAdapterCombo" SelectedValue="{Binding Config.NetworkAdapter, Mode=TwoWay}" SelectedValuePath="Value" DisplayMemberPath="Label" HorizontalAlignment="Stretch" Margin="0,0,0,16" />
+
+                                        <TextBlock Text="{x:Bind L.GpuCard, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,8" />
+                                        <ComboBox x:Name="GpuAdapterCombo" SelectedValue="{Binding Config.GpuAdapter, Mode=TwoWay}" SelectedValuePath="Value" DisplayMemberPath="Label" HorizontalAlignment="Stretch" Margin="0,0,0,16" />
+
+                                        <TextBlock Text="{x:Bind L.Drives, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Margin="0,0,0,8" />
+                                        <ScrollViewer MaxHeight="140" VerticalScrollBarVisibility="Auto">
+                                            <ItemsControl ItemsSource="{x:Bind DiskItems}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapGrid Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSelected, Mode=TwoWay}" Margin="0,0,8,8" MinWidth="120" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- ==================== ВНЕШНИЙ ВИД ==================== -->
+                    <StackPanel x:Name="AppearanceSection" Visibility="Collapsed">
+                        <TextBlock Text="{x:Bind L.SecAppearance, Mode=OneWay}" FontSize="28" FontWeight="SemiBold" Margin="0,0,0,24" />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Колонка 1: типографика -->
+                            <StackPanel Grid.Column="0">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,16">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Bind L.Typography, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,12" />
+
+                                        <TextBlock Text="{x:Bind L.FontLabel, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,8" />
+                                        <ComboBox SelectedValue="{Binding Config.FontFamily, Mode=TwoWay}" SelectedValuePath="Content" HorizontalAlignment="Stretch" Margin="0,0,0,16">
+                                            <ComboBoxItem Content="Segoe UI" />
+                                            <ComboBoxItem Content="Segoe UI Variable Display" />
+                                            <ComboBoxItem Content="Inter" />
+                                            <ComboBoxItem Content="Roboto" />
+                                            <ComboBoxItem Content="Consolas" />
+                                        </ComboBox>
+
+                                        <TextBlock Text="{x:Bind L.DisplayMode, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,8" />
+                                        <ComboBox x:Name="DisplayModeCombo" SelectedValue="{Binding Config.DisplayStyle, Mode=TwoWay}" SelectedValuePath="Value" DisplayMemberPath="Label" HorizontalAlignment="Stretch" Margin="0,0,0,16" />
+
+                                        <ToggleSwitch Header="{x:Bind L.BoldText, Mode=OneWay}" IsOn="{Binding Config.IsTextBold, Mode=TwoWay}" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Колонка 2: цвета -->
+                            <StackPanel Grid.Column="2">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="16">
+                                    <StackPanel Spacing="0">
+                                        <TextBlock Text="{x:Bind L.Palette, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,12" />
+
+                                        <TextBlock Text="{x:Bind L.AccentColor, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,8" />
+                                        <Button HorizontalAlignment="Stretch" Height="36" Margin="0,0,0,12" Click="ColorButton_Click" Tag="Accent">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="18" Height="18" CornerRadius="3" Background="{Binding Config.AccentColorHex, Converter={StaticResource HexToBrush}}" BorderBrush="White" BorderThickness="1" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.SelectAccent, Mode=OneWay}" Margin="8,0" VerticalAlignment="Center" FontSize="12" />
+                                            </Grid>
+                                        </Button>
+
+                                        <TextBlock Text="{x:Bind L.LabelColor, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,8" />
+                                        <Button HorizontalAlignment="Stretch" Height="36" Margin="0,0,0,12" Click="ColorButton_Click" Tag="Label">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="18" Height="18" CornerRadius="3" Background="{Binding Config.LabelColorHex, Converter={StaticResource HexToBrush}}" BorderBrush="White" BorderThickness="1" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.SelectLabel, Mode=OneWay}" Margin="8,0" VerticalAlignment="Center" FontSize="12" />
+                                            </Grid>
+                                        </Button>
+
+                                        <TextBlock Text="{x:Bind L.PodColor, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,8" />
+                                        <Button HorizontalAlignment="Stretch" Height="36" Click="ColorButton_Click" Tag="Pod">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="18" Height="18" CornerRadius="3" Background="{Binding Config.PodColorHex, Converter={StaticResource HexToBrush}}" BorderBrush="White" BorderThickness="1" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.SelectPod, Mode=OneWay}" Margin="8,0" VerticalAlignment="Center" FontSize="12" />
+                                            </Grid>
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Колонка 3: масштаб и фон -->
+                            <StackPanel Grid.Column="4">
+                                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="16">
+                                    <StackPanel>
+                                        <TextBlock Text="{x:Bind L.ScalingCard, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,12" />
+
+                                        <TextBlock Text="{x:Bind L.ScalingLabel, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,4" />
+                                        <Slider Minimum="0.5" Maximum="2.0" StepFrequency="0.1" SnapsTo="StepValues" Value="{Binding Config.ScaleFactor, Mode=TwoWay}" Margin="0,0,0,12" />
+
+                                        <TextBlock Text="{x:Bind L.SpacingLabel, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,4" />
+                                        <Slider x:Name="ColumnSpacingSlider" Minimum="0" Maximum="20" StepFrequency="1" SnapsTo="StepValues" Value="{Binding Config.ColumnSpacing, Mode=TwoWay}" Margin="0,0,0,12" />
+
+                                        <ToggleSwitch Header="{x:Bind L.CapsulesToggle, Mode=OneWay}" IsOn="{Binding Config.ShowPods, Mode=TwoWay}" Margin="0,0,0,8" />
+
+                                        <ToggleSwitch Header="{x:Bind L.BackgroundToggle, Mode=OneWay}" IsOn="{Binding Config.ShowBackground, Mode=TwoWay}" Margin="0,0,0,8" />
+
+                                        <Button HorizontalAlignment="Stretch" Height="32" Click="ColorButton_Click" Tag="Background"
+                                                Visibility="{Binding Config.ShowBackground, Converter={StaticResource BoolToVis}}">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="18" Height="18" CornerRadius="3" Background="{Binding Config.BackgroundColorHex, Converter={StaticResource HexToBrush}}" BorderBrush="White" BorderThickness="1" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.SelectPlate, Mode=OneWay}" Margin="8,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Цвета секций -->
+                        <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,16,0,0">
+                            <StackPanel>
+                                <TextBlock Text="{x:Bind L.SectionColors, Mode=OneWay}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,4" />
+                                <TextBlock Text="{x:Bind L.SectionColorsDesc, Mode=OneWay}" Opacity="0.6" FontSize="12" Margin="0,0,0,16" TextWrapping="Wrap" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Сеть -->
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="{x:Bind L.SecNet, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,6" />
+                                        <TextBlock Text="{x:Bind L.SubLabel, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="NetLabel">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.NetLabelColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapNet, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="NetLabel" Opacity="0.6" Margin="0,0,0,8"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                        <TextBlock Text="{x:Bind L.SubMetric, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="NetAccent">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.NetAccentColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapNet, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="NetAccent" Opacity="0.6"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                    </StackPanel>
+
+                                    <!-- ЦП / ОЗУ -->
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="{x:Bind L.SecCpuRam, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,6" />
+                                        <TextBlock Text="{x:Bind L.SubLabel, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="CpuRamLabel">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.CpuRamLabelColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapCpuRam, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="CpuRamLabel" Opacity="0.6" Margin="0,0,0,8"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                        <TextBlock Text="{x:Bind L.SubMetric, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="CpuRamAccent">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.CpuRamAccentColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapCpuRam, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="CpuRamAccent" Opacity="0.6"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                    </StackPanel>
+
+                                    <!-- ГП / Темп -->
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Text="{x:Bind L.SecGpu, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,6" />
+                                        <TextBlock Text="{x:Bind L.SubLabel, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="GpuLabel">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.GpuLabelColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapGpu, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="GpuLabel" Opacity="0.6" Margin="0,0,0,8"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                        <TextBlock Text="{x:Bind L.SubMetric, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="GpuAccent">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.GpuAccentColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapGpu, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="GpuAccent" Opacity="0.6"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                    </StackPanel>
+
+                                    <!-- Диск -->
+                                    <StackPanel Grid.Column="6">
+                                        <TextBlock Text="{x:Bind L.SecDisk, Mode=OneWay}" FontWeight="SemiBold" FontSize="12" Opacity="0.7" Margin="0,0,0,6" />
+                                        <TextBlock Text="{x:Bind L.SubLabel, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="DiskLabel">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.DiskLabelColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapDisk, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="DiskLabel" Opacity="0.6" Margin="0,0,0,8"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                        <TextBlock Text="{x:Bind L.SubMetric, Mode=OneWay}" FontSize="11" Opacity="0.5" Margin="0,0,0,4" />
+                                        <Button HorizontalAlignment="Stretch" Height="32" Margin="0,0,0,4" Click="ColorButton_Click" Tag="DiskAccent">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="16" Height="16" CornerRadius="3" BorderBrush="White" BorderThickness="1"
+                                                        Background="{Binding Config.DiskAccentColorHex, Converter={StaticResource HexToBrush}, ConverterParameter='#333333'}" />
+                                                <TextBlock Grid.Column="1" Text="{x:Bind L.CapDisk, Mode=OneWay}" Margin="6,0" VerticalAlignment="Center" FontSize="11" />
+                                            </Grid>
+                                        </Button>
+                                        <Button HorizontalAlignment="Stretch" Height="24" FontSize="10" Click="ClearSectionColor_Click" Tag="DiskAccent" Opacity="0.6"
+                                                Content="{x:Bind L.ClearBtn, Mode=OneWay}" />
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Кнопки действий -->
+                        <Border Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}" CornerRadius="8" Margin="0,24,0,0" Padding="16">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button x:Name="ResetDefaultsBtn" Click="ResetToDefaults_Click" Padding="16,8" CornerRadius="4">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <SymbolIcon Symbol="Refresh" />
+                                        <TextBlock Text="{x:Bind L.ResetAppearance, Mode=OneWay}" VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- ==================== О ПРОГРАММЕ ==================== -->
+                    <StackPanel x:Name="AboutSection" Visibility="Collapsed">
+                        <TextBlock Text="{x:Bind L.NavAbout, Mode=OneWay}" Foreground="#00CCFF" FontSize="20" Margin="0,0,0,16" />
+
+                        <StackPanel Margin="0,0,0,12">
+                            <TextBlock Text="Kil0bit System Monitor" FontWeight="Bold" FontSize="18" />
+                            <TextBlock Text="{x:Bind ViewModel.AppVersion, Mode=OneWay}" Opacity="0.7" FontSize="13" />
+                            <TextBlock Text="{x:Bind L.AboutDesc, Mode=OneWay}"
+                                       TextWrapping="Wrap" MaxWidth="600" FontSize="14" Margin="0,4,0,0" />
+                        </StackPanel>
+
+                        <Border Height="1" Background="#1AFFFFFF" Margin="0,10" />
+
+                        <TextBlock Text="{x:Bind L.ConnectTitle, Mode=OneWay}" FontWeight="SemiBold" FontSize="16" Margin="0,20,0,12" />
+
+                        <Grid HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <HyperlinkButton Content="YouTube (@kilObit)" NavigateUri="https://www.youtube.com/@kilObit" FontSize="14" Margin="0,0,16,10" />
+                            <HyperlinkButton Content="GitHub (kil0bit-kb)" NavigateUri="https://github.com/kil0bit-kb" FontSize="14" Margin="0,0,0,10" Grid.Column="1" />
+                            <HyperlinkButton Content="{x:Bind L.BlogLink, Mode=OneWay}" NavigateUri="https://kil0bit.blogspot.com/" FontSize="14" Margin="0,0,16,10" Grid.Row="1" />
+                            <HyperlinkButton Content="X (@kil0bit)" NavigateUri="https://x.com/kil0bit" FontSize="14" Margin="0,0,0,10" Grid.Row="1" Grid.Column="1" />
+                            <HyperlinkButton Content="{x:Bind L.PatreonLink, Mode=OneWay}" NavigateUri="https://www.patreon.com/cw/KB_kilObit" FontSize="14" Margin="0,0,16,10" Grid.Row="2" />
+                        </Grid>
+
+                        <StackPanel Margin="0,30,0,0" Opacity="0.6">
+                            <TextBlock Text="{x:Bind L.MadeWith, Mode=OneWay}" HorizontalAlignment="Center" FontSize="12" />
+                            <TextBlock Text="© 2026 Kil0bit System Monitor" HorizontalAlignment="Center" FontSize="11" Margin="0,2,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </NavigationView>
+
+        <!-- Нижняя панель -->
+        <Border Grid.Row="2" Padding="24,16" Background="{ThemeResource LayerFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="0,1,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="QuitBtn" Grid.Column="0" Content="{x:Bind L.QuitApp, Mode=OneWay}" Click="QuitButton_Click"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Background="#D32F2F" Foreground="White"
+                        HorizontalAlignment="Left" Padding="16,8" CornerRadius="4" />
+
+                <Button x:Name="ResetAppBtn" Grid.Column="1" Click="ResetApp_Click"
+                        HorizontalAlignment="Center" Padding="16,8" CornerRadius="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <SymbolIcon Symbol="Refresh" />
+                        <TextBlock Text="{x:Bind L.ResetAll, Mode=OneWay}" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="SaveCloseBtn" Grid.Column="2" Content="{x:Bind L.SaveClose, Mode=OneWay}" Click="SaveButton_Click"
+                        Style="{StaticResource AccentButtonStyle}"
+                        HorizontalAlignment="Right" Padding="24,8" CornerRadius="4" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

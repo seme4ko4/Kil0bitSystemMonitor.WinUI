@@ -1,0 +1,17 @@
+# Build results
+bin/
+obj/
+publish/
+publish-single/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
