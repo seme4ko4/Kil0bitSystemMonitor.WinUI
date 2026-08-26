@@ -72,7 +72,7 @@
 
 ```powershell
 # 1. Клонируй форк
-git clone https://github.com/<YOUR_USERNAME>/Kil0bitSystemMonitor.WinUI.git
+git clone https://github.com/seme4ko4/Kil0bitSystemMonitor.WinUI.git
 cd Kil0bitSystemMonitor.WinUI
 
 # 2. Сборка (x64)
