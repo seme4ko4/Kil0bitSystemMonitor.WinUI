@@ -3,6 +3,8 @@ bin/
 obj/
 publish/
 publish-single/
+publish-*/
+*.zip
 
 # Visual Studio
 .vs/
