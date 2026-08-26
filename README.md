@@ -132,14 +132,3 @@ Kil0bitSystemMonitor.WinUI/
 MIT — см. [LICENSE](LICENSE)
 
 Copyright (c) 2026 KB - kil0bit (original), WinUI 3 port modifications by contributors.
-
----
-
-## 🛠 Планы / Roadmap
-
-- [ ] MSIX упаковка
-- [ ] Авто-обновление
-- [ ] Дополнительные темы WinUI 3
-- [ ] Виджеты для новых сенсоров
-
-PR и issue приветствуются!
