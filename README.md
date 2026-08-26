@@ -60,36 +60,6 @@
 
 ---
 
-## 🔨 Сборка из исходников
-
-### Требования
-- **Windows 11** (рекомендуется) или Windows 10 19041+
-- **Visual Studio 2022 17.10+** с workload **"Windows App Development"**
-- **.NET 8.0 SDK**
-- **Windows App SDK 1.8**
-
-### Шаги
-
-```powershell
-# 1. Клонируй форк
-git clone https://github.com/seme4ko4/Kil0bitSystemMonitor.WinUI.git
-cd Kil0bitSystemMonitor.WinUI
-
-# 2. Сборка (x64)
-dotnet build -c Release -p:Platform=x64
-
-# 3. Запуск
-dotnet run --project Kil0bitSystemMonitor.WinUI.csproj -c Release -p:Platform=x64
-
-# 4. Публикация single-file (опционально)
-dotnet publish -c Release -p:Platform=x64 -p:PublishSingleFile=true --self-contained true
-# результат: publish-single/ или bin/Release/net8.0-windows10.0.19041.0/win-x64/
-```
-
-Без `dotnet` — открой `Kil0bitSystemMonitor.WinUI.csproj` в Visual Studio и нажми **F5**.
-
----
-
 ## 📂 Структура проекта
 
 ```
